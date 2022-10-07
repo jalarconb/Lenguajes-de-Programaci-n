@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------------------
 # TODO:
-# - Nada, ya pasé todos los casos <:
+# - a.
 # -------------------------------------------------------------------------------------------------
 
 import re
@@ -58,6 +58,8 @@ def getType(line):
 
 # Inicializa la línea
 line = ' '
+# Inicializa la cola de tokens y lexemas
+token = []
 
 while line:
 	# Leer línea
@@ -117,15 +119,19 @@ while line:
 					index = line.index(lineStrip)
 					# Subclasificación de tokens: Si hay parte decimal, se usa tkn_float; tkn_integer en otro caso
 					if	"." in id:
-						print(f'<tkn_float,{id},{fila},{line.index(lineStrip, index+1)+1}>')
+						# print(f'<tkn_float,{id},{fila},{line.index(lineStrip, index+1)+1}>')
+						token.append(['tkn_float',id,fila,len(staticLineStrip)-len(lineStrip)+1])
 					else:
-						print(f'<tkn_integer,{id},{fila},{line.index(lineStrip, index+1)+1}>')
+						# print(f'<tkn_integer,{id},{fila},{line.index(lineStrip, index+1)+1}>')
+						token.append(['tkn_integer',id,fila,line.index(lineStrip)+1])
 				else:
 					# Subclasificación de tokens: Si hay parte decimal, se usa tkn_float; tkn_integer en otro caso
 					if	"." in id:
-						print(f'<tkn_float,{id},{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						# print(f'<tkn_float,{id},{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						token.append(['tkn_float',id,fila,len(staticLineStrip)-len(lineStrip)+1])
 					else:
-						print(f'<tkn_integer,{id},{fila},{line.index(lineStrip)+1}>')
+						# print(f'<tkn_integer,{id},{fila},{line.index(lineStrip)+1}>')
+						token.append(['tkn_integer',id,fila,line.index(lineStrip)+1])
 
 
 
@@ -138,22 +144,29 @@ while line:
 				if id in reservadas:
 					if line.count(lineStrip) > 1:
 						if lineStrip == id:
-							print(f'<{id},{fila},{line.index(lineStrip, len(line)-len(id)-1)+1}>')
+							# print(f'<{id},{fila},{line.index(lineStrip, len(line)-len(id)-1)+1}>')
+							token.append([id,fila,line.index(lineStrip, len(line)-len(id)-1)+1])
 						else:
 							index = line.index(lineStrip)
-							print(f'<{id},{fila},{line.index(lineStrip, index+1)+1}>')
+							# print(f'<{id},{fila},{line.index(lineStrip, index+1)+1}>')
+							token.append([id,fila,line.index(lineStrip, index+1)+1])
 					elif line.index(buffer) == 0:
-						print(f'<{id},{fila},{line.index(lineStrip)+1}>')
+						# print(f'<{id},{fila},{line.index(lineStrip)+1}>')
+						token.append([id,fila,line.index(lineStrip)+1])
 					else: 
-						print(f'<{id},{fila},{line.index(lineStrip)+1}>')
+						# print(f'<{id},{fila},{line.index(lineStrip)+1}>')
+						token.append([id,fila,line.index(lineStrip)+1])
 				else:
 					if lineStrip == id:
-						print(f'<id,{id},{fila},{line.index(lineStrip, len(line)-len(id)-1)+1}>')
+						# print(f'<id,{id},{fila},{line.index(lineStrip, len(line)-len(id)-1)+1}>')
+						token.append(['id',id,fila,line.index(lineStrip, len(line)-len(id)-1)+1])
 					elif line.count(lineStrip) > 1:
 						index = line.index(lineStrip)
-						print(f'<id,{id}, {fila},{line.index(lineStrip, index+1)+1}>')
+						# print(f'<id,{id}, {fila},{line.index(lineStrip, index+1)+1}>')
+						token.append(['id',id,fila,line.index(lineStrip, index+1)+1])
 					else:
-						print(f'<id,{id},{fila},{line.index(lineStrip)+1}>')
+						# print(f'<id,{id},{fila},{line.index(lineStrip)+1}>')
+						token.append(['id',id,fila,line.index(lineStrip)+1])
 
 			# OPERADORES
 			elif getType(lineStrip) == 'OPERADORES':
@@ -166,33 +179,46 @@ while line:
 					buffer = buffer[1:]
 
 					if id == '==':
-						print(f'<tkn_equal,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						# print(f'<tkn_equal,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						token.append(['tkn_equal',fila,len(staticLineStrip)-len(lineStrip)+1])
 					elif id == '<=':
-						print(f'<tkn_leq,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						# print(f'<tkn_leq,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						token.append(['tkn_leq',fila,len(staticLineStrip)-len(lineStrip)+1])
 					elif id == '>=':
-						print(f'<tkn_geq,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						# print(f'<tkn_geq,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						token.append(['tkn_geq',fila,len(staticLineStrip)-len(lineStrip)+1])
 					elif id == '!=':
-						print(f'<tkn_neq,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						# print(f'<tkn_neq,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						token.append(['tkn_neq',fila,len(staticLineStrip)-len(lineStrip)+1])
 
 				# Operadores de un símbolo
 				elif id == '=':
-					print(f'<tkn_assign,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_assign,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_assign',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '<':
-					print(f'<tkn_less,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_less,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_less',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '>':
-					print(f'<tkn_greater,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_greater,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_greater',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '+':
-					print(f'<tkn_plus,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_plus,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_plus',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '-':
-					print(f'<tkn_minus,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_minus,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_minus',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '/':
-					print(f'<tkn_div,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_div,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_div',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '*':
-					print(f'<tkn_times,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_times,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_times',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '%':
-					print(f'<tkn_mod,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_mod,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_mod',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '?':
-					print(f'<tkn_question_mark,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_question_mark,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_question_mark',fila,len(staticLineStrip)-len(lineStrip)+1])
 				elif id == '!':
 					# El operador "!" por sí solo no existe, solo aparece en "!="
 					print(f'>>> Error lexico (linea: {fila}, posicion: {len(staticLineStrip)-len(lineStrip)+1})')
@@ -204,19 +230,26 @@ while line:
 				buffer = lineStrip.replace(id, '', 1)
 
 				if id == '(':
-					print(f'<tkn_opening_par,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_opening_par,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_opening_par',fila,len(staticLineStrip)-len(lineStrip)+1])
 				if id == ',':
-					print(f'<tkn_comma,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_comma,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_comma',fila,len(staticLineStrip)-len(lineStrip)+1])
 				if id == ')':
-					print(f'<tkn_closing_par,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_closing_par,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_closing_par',fila,len(staticLineStrip)-len(lineStrip)+1])
 				if id == ']':
-					print(f'<tkn_closing_bra,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_closing_bra,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_closing_bra',fila,len(staticLineStrip)-len(lineStrip)+1])
 				if id == '[':
-					print(f'<tkn_opening_bra,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_opening_bra,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_opening_bra',fila,len(staticLineStrip)-len(lineStrip)+1])
 				if id == ';':
-					print(f'<tkn_semicolon,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_semicolon,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_semicolon',fila,len(staticLineStrip)-len(lineStrip)+1])
 				if id == '.':
-					print(f'<tkn_period,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					# print(f'<tkn_period,{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+					token.append(['tkn_period',fila,len(staticLineStrip)-len(lineStrip)+1])
 
 			
 
@@ -251,7 +284,8 @@ while line:
 							id = id + buffer[:index+1]
 							buffer = buffer[index+1:]
 						
-						print(f'<tkn_str,{id[1:len(id)-1]},{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						# print(f'<tkn_str,{id[1:len(id)-1]},{fila},{len(staticLineStrip)-len(lineStrip)+1}>')
+						token.append(['tkn_str',id[1:len(id)-1],fila,len(staticLineStrip)-len(lineStrip)+1])
 
 				except ValueError:
 					# Error léxico: No se logró cerrar la cadena
@@ -271,3 +305,5 @@ while line:
 			buffer = '\n'		
 
 	fila += 1
+
+	print("El analisis sintactico ha finalizado exitosamente.")
