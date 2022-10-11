@@ -1,1 +1,3 @@
-{'A0': ['big', 'bet'], 'A1': ['bad'], 'B0': ['big'], 'B1': ['bet'], 'C0': ['cat'], 'C1': ['cow']}
+termsDict = {'[S]0': ['integer', 'float'], '[S]1': ['Put'], '[type]0': ['integer'], '[type]1': ['float'], '[identifier]0': ['tkn_id'], '[item]0': ['tkn_id'], '[item]1': ['tkn_str'], '[item]2': ['[arithexpr]']}
+
+instructDict = {'[S]0': ['type()', 'identifier()'], '[S]1': ["match('Put')", 'item()', "match('to')", "match('output')"], '[type]0': ["match('integer')"], '[type]1': ["match('float')"], '[identifier]0': ["match('tkn_id')"], '[item]0': ["match('tkn_id')"], '[item]1': ["match('tkn_str')"], '[item]2': ['arithexpr()']}

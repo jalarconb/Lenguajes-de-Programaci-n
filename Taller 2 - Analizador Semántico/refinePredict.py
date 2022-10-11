@@ -9,8 +9,9 @@
 
 import sys
 
-# Conjunto de predicción refinado
-predict = {}
+# Diccionarios refinados: Términos e Instrucciones
+termsDict = {}
+instructDict = {}
 
 # No terminal actual. Aquí se pone el primero de la gramática
 currentNonTerm = 'A'
@@ -29,6 +30,11 @@ try:
 except ValueError:
     pass
 
+
+# lines de prueba
+# lines = ['[S] ->  [type] [identifier] : integer float']
+
+
 # La cantidad de líneas es el número de iteraciones para el siguiente for
 linesLength = len(lines)
 
@@ -38,7 +44,7 @@ for i in range(0,linesLength):
   line = lines.pop(0)
 
   # Guarda el no terminal de la regla
-  nonTerm = line[0]
+  nonTerm = line[0:line.index('-')-1]
 
   # Si es un nuevo no terminal, reinicia el subíndice x
   if currentNonTerm != nonTerm:
@@ -49,13 +55,30 @@ for i in range(0,linesLength):
   nonTerm = nonTerm + str(x)
   x += 1
 
+  # Guarda la parte de la línea que tiene las instrucciones y las separa
+  instruct = line[line.index('-')+2:line.index(':')]
+  instruct = instruct.strip()
+  # print(f'instruct: {instruct}')
+  instruct = instruct.split(' ')
+  # print(f'instruct Split: {instruct}')
+
+  # Reemplaza los term por match('term') y los [no-term] por no-term()
+  for j in range(0,len(instruct)):
+    # No terminal
+    if instruct[j][0] == '[' and instruct[j][len(instruct[j])-1] == ']':
+      instruct[j] = instruct[j].lstrip('[').rstrip(']') + '()'
+    # Terminal
+    else:
+      instruct[j] = 'match(\'' + instruct[j] + '\')'
+  
   # Guarda la parte de la línea que tiene los terminales y los separa
   term = line[line.index(':')+1:len(line)]
   term = term.strip().split(' ')
 
   # Agrega la regla al diccionario de predicción
-  predict[nonTerm] = term
+  instructDict[nonTerm] = instruct
+  termsDict[nonTerm] = term
 
 with open('predictionSetRefined.txt', 'w') as file:
   sys.stdout = file
-  print(predict)
+  print(f'termsDict = {termsDict}\n\ninstructDict = {instructDict}')

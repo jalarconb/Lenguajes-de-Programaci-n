@@ -1,0 +1,83 @@
+[S]     : [type] [identifier]
+
+[type]  : integer
+[type]  : float
+
+[identifier]  : tkn_id
+
+-------------
+
+[S]     : Put [item] to output
+
+[item]  : tkn_id
+[item]  : tkn_str
+[item]  : [arithexpr]
+
+-------------
+
+[S]   : [var] = [S']
+
+[var] : tkn_id
+
+[S']  : Get next input
+[S']  : [arithexpr]
+
+-------------
+
+Arithmetic operators: +, -, *, /, %
+Precedence: (), unary -, unary+, * / %, + -, left-to-right
+
+----------------------
+Operador  | Asociatividad 
+----------------------
++         | N.A.
+-         | Izquierda
+*         | N.A.
+/         | Izquierda
+%         | Izquierda
+unary -   | Izquierda
+unary +   | Izquierda
+()        | ???
+----------------------
+
+[arithexpr] : [arithexpr] + [t]
+[t]: (), int, float
+
+[arithexpr] : [arithexpr] + [arithexpr]
+[arithexpr] : [arithexpr] - [arithexpr]
+
+[arithexpr] : [arithexpr] - [exp]
+[exp]       : [exp] * [xd]
+[exp]       : [exp] / [xd]
+[exp]       : [xd]
+[xd]        : 
+
+[arithexpr] : +  [t] [suma]
+[suma]      : e
+
+[resta]     : -  [t] [resta]
+[resta]     : e
+
+[multi]     : *  [t] [multi]
+[multi]     : e
+
+[division]     : /  [t] [division]
+[division]     : e
+
+[modulo]     : %  [t] [modulo]
+[modulo]     : e
+
+------------------------------------------------------------------------------------------------------------------
+
+S : if [condexpr]
+      [substatements]
+    elseif [condexpr]
+  	  [substatements]
+    else
+	    [substatements]
+
+S : while [condexpr]
+    	[substatements]
+
+S : for [init]; [condexpr]; [update]
+      [substatements]

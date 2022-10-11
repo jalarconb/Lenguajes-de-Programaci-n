@@ -1,6 +1,8 @@
-A ->  B C : big bet
-A ->  bad : bad
-B ->  big C boss : big
-B ->  bet : bet
-C ->  cat : cat
-C ->  cow : cow
+[S] ->  [type] [identifier] : integer float
+[S] ->  Put [item] to output : Put
+[type] ->  integer : integer
+[type] ->  float : float
+[identifier] ->  tkn_id : tkn_id
+[item] ->  tkn_id : tkn_id
+[item] ->  tkn_str : tkn_str
+[item] ->  [arithexpr] : [arithexpr]
