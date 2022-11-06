@@ -1,0 +1,13 @@
+Function factorial_recursive(integer n) returns integer res
+   // Base case: 1! = 1
+   if (n == 1)
+      res = 1
+      
+   // Recursive case: n! = n * (n-1)!
+   else
+      res = n * factorial_recursive(n-1)
+
+Function Main() returns nothing
+   integer evaluates
+   evaluates = factorial_recursive(factorial_recursive(3))
+   Put evaluates to output

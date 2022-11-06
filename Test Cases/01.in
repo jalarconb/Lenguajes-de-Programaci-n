@@ -1,0 +1,14 @@
+integer b
+integer h
+float rectangle_area
+float triangle_area
+
+b = 15
+h = 11
+
+rectangle_area = b*h
+triangle_area = rectangle_area/2
+
+Put rectangle_area to output
+Put "\n-----\n" to output
+Put triangle_area to output
