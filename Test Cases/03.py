@@ -31,6 +31,7 @@ x: float
 y: float
 i: int
 
+# Size:
 for i in range(0,4):
     userNums.append(userNums[0])
 
