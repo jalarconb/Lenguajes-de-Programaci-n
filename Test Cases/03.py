@@ -31,8 +31,8 @@ x: float
 y: float
 i: int
 
-# Size:
-for i in range(0,4):
+# userNums.size = 5
+for i in range(-1,5):
     userNums.append(userNums[0])
 
 for i in range(0, len(userNums), 1):

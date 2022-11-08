@@ -29,8 +29,8 @@
 
 # Triángulo de Pascal
 
-coef: int
 rows: int
+coef: int
 space: int
 i: int
 j: int
